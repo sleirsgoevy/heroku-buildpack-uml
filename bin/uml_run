@@ -1,5 +1,7 @@
 #!/bin/bash -x
 
 echo "$1" > "$APP/uml_command"
-TEMP="$APP" "$APP/uml/uml" root=/dev/root rw rootflags=/ rootfstype=hostfs init="$APP/uml/init" eth0=slirp,10.0.2.15,"$APP/uml/slirp" mem=${MEM}M quiet app="$APP"
+mkfifo "$APP/fifo"
+TEMP="$APP" "$APP/uml/uml" root=/dev/root rw rootflags=/ rootfstype=hostfs init="$APP/uml/init" eth0=slirp,10.0.2.15,"$APP/uml/slirp" mem=${MEM}M quiet app="$APP" < "$APP/fifo" > /dev/null 2>&1
+rm "$APP/fifo"
 rm "$APP/uml_command"
