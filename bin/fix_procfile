@@ -1,0 +1,17 @@
+#!/usr/bin/env python3
+import sys, shlex
+
+procfile_path = sys.argv[1]
+
+lines = []
+
+with open(procfile_path) as file:
+    for line in file:
+        if ":" in line:
+            type, cmd = line.split(':', 1)
+            lines.append(type+': /app/uml/uml_run '+shlex.quote('cd /app; '+cmd.strip())+'\n')
+        else:
+            lines.append(line)
+
+with open(procfile_path, 'w') as file:
+    file.writelines(lines)

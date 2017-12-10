@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo "$1" > "$APP/uml_command"
+TEMP="$APP" "$APP/uml/uml" root=/dev/root rw rootflags=/ rootfstype=hostfs init="$APP/uml/init" mem=${MEM}M quiet app="$APP"
+rm "$APP/uml_command"

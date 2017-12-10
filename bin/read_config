@@ -1,0 +1,11 @@
+FS_SIZE=512
+MEM=1024
+
+if [ "x$APP" == x ]
+then export APP=/app
+fi
+
+. "$APP/config.sh"
+
+export FS_SIZE="$FS_SIZE"
+export MEM="$MEM"
