@@ -6,6 +6,10 @@ export ENV="$3"
 export BP="$(realpath "$(dirname "$0")/..")"
 export PATH="$PATH:$BP/bin"
 
+if ! test -d "$CACHE"
+then mkdir "$CACHE"
+fi
+
 . "$BP/bin/read_config"
 
 mkdir "$CACHE/app_root"
@@ -18,7 +22,6 @@ mkdir "$APP/shadow_mount"
 dd if=/dev/zero of="$APP/shadow_root.img" bs=1048576 count="$FS_SIZE"
 /sbin/mke2fs "$APP/shadow_root.img"
 wget http://ftp.debian.org/debian/pool/main/c/criu/criu_3.6-2_amd64.deb -O "$APP/criu.deb"
-echo $MEM
 uml_run "rm /var/lib/dpkg/lock /var/lib/dpkg/triggers/Lock; rm -r /var/cache/apt/archives/*; umount /app; dpkg -i '$APP/criu.deb'; apt-get -f install; mount --bind '$APP/root' /app; bash /app/install.sh"
 
 mkdir "$APP/.profile.d"
