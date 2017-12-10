@@ -13,7 +13,6 @@ find "$APP" ! -path "$APP" -maxdepth 1 -exec mv "{}" "$CACHE/app_root" \;
 mv "$CACHE/app_root" "$APP/root"
 
 tar -xvzf "$BP/uml.tar.gz" -C "$APP"
-mkdir "$APP/tmp"
 mkdir "$APP/shadow_root"
 mkdir "$APP/shadow_mount"
 dd if=/dev/zero of="$APP/shadow_root.img" bs=1048576 count="$FS_SIZE"
@@ -24,6 +23,11 @@ uml_run "rm /var/lib/dpkg/lock /var/lib/dpkg/triggers/Lock; rm -r /var/cache/apt
 
 mkdir "$APP/.profile.d"
 cp "$BP/bin/read_config" "$APP/.profile.d"
+cp "$BP/bin/redirect_PORT" "$APP/.profile.d"
 
 cp "$APP/root/Procfile" "$APP/Procfile"
 fix_procfile "$APP/Procfile"
+
+if test -f "$APP/root/.slirprc"
+then cp "$APP/root/.slirprc" "$APP"
+fi
