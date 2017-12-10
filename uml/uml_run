@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "$1" > /app/uml_command
+TEMP=/app /app/uml/uml root=/dev/root rootflags=/ rootfstype=hostfs quiet eth0=slirp,10.0.2.15,/app/uml/slirp mem=${MEM}M init=/app/uml/init

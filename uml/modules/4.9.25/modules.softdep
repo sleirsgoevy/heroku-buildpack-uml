@@ -1,0 +1,5 @@
+# Soft dependencies extracted from modules themselves.
+softdep fscrypto pre: crypto-aes crypto-ecb
+softdep nfsd pre: crypto-md5
+softdep cifs pre: crypto-arc4 crypto-des crypto-ecb crypto-hmac crypto-md4 crypto-md5 crypto-aes crypto-cmac crypto-sha256
+softdep f2fs pre: crypto-crc32c

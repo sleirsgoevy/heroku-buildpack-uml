@@ -1,0 +1,35 @@
+#!/bin/bash -x
+
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+mount -t devtmpfs udev /dev
+mount -t proc proc /proc
+mount -t sysfs sysfs /sys
+
+APP="$(sed s/^.*app=// /proc/cmdline)"
+
+mount --bind "$APP/uml/modules" /lib/modules
+
+ifconfig eth0 up
+ifconfig eth0 10.0.2.15
+route add default dev eth0
+
+modprobe fuse
+modprobe ext4
+modprobe loop
+mount "$APP/shadow_root.img" "$APP/shadow_root" -t ext4
+LD_LIBRARY_PATH="$APP/uml" "$APP/uml/unionfs" -o rw,cow "$APP/shadow_root=RW:/=RO" "$APP/shadow_mount"
+
+mount --bind /proc "$APP/shadow_mount/proc"
+mount --bind /dev "$APP/shadow_mount/dev"
+mount --bind /sys "$APP/shadow_mount/sys"
+
+mkdir "$APP/shadow_mount/app"
+mount --bind "$APP/root" "$APP/shadow_mount/app"
+
+chroot "$APP/shadow_mount" bash -c "$(cat "$APP/uml_command")"
+
+umount "$APP/shadow_mount/dev" "$APP/shadow_mount/proc" "$APP/shadow_mount/sys"
+umount "$APP/shadow_mount"
+umount "$APP/shadow_root"
+mount -o remount,ro,sync /dev/root /
+halt -f
