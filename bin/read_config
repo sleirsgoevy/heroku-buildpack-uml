@@ -2,7 +2,7 @@ FS_SIZE=512
 MEM=1024
 
 if [ "x$APP" == x ]
-then export APP=/app
+then export APP=/app/root
 fi
 
 . "$APP/config.sh"
