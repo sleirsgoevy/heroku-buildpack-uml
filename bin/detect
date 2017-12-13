@@ -2,7 +2,7 @@
 
 APP="$1"
 
-if test -f "$APP/config.sh" && test -f "$APP/install.sh"
+if test -f "$APP/config.sh"
 then echo "UML"
 exit 0
 fi
