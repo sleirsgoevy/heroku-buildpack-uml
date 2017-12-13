@@ -2,4 +2,9 @@ if [ "x$MEM" == x ]
 then MEM=1024
 fi
 
+if [ "x$TEMP" == x ]
+then TEMP=/app/.uml
+fi
+
 export MEM="$MEM"
+export TEMP="$TEMP"
