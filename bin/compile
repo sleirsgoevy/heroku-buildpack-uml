@@ -15,7 +15,7 @@ fi
 tar -xvzf "$BP/uml.tar.gz" -C "$APP"
 
 mkdir "$APP/.profile.d"
-cp "$BP/bin/read_config" "$APP/.profile.d"
-cp "$BP/bin/redirect_PORT" "$APP/.profile.d"
+cp "$BP/bin/read_config" "$APP/.profile.d/uml_read_config.sh"
+cp "$BP/bin/redirect_PORT" "$APP/.profile.d/uml_redirect_PORT.sh"
 
 fix_procfile "$APP/Procfile"
